@@ -1,0 +1,42 @@
+<?php
+
+namespace Statikbe\LaravelMailEditor;
+
+use Illuminate\Support\ServiceProvider;
+
+class MailEditorServiceProvider extends ServiceProvider
+{
+    /**
+     * Register services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/mail-editor.php', 'mail-editor'
+        );
+    }
+
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->publishes([
+            __DIR__.'/../config/mail-editor.php' => config_path('mail-editor.php'),
+        ], 'config');
+
+        $this->publishes([
+            __DIR__.'/../database/migrations/create_mail_templates_table.php.stub' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_mail_templates_table.php'),
+        ], 'migrations');
+
+        $this->publishes([
+            __DIR__.'/../resources/views' => resource_path('views/vendor/statikbe'),
+        ], 'views');
+
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'statikbe');
+    }
+}

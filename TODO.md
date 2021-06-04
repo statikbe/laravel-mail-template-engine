@@ -1,0 +1,3 @@
+- Exceptions
+    - BaseMail: renderengine not found
+    - BaseMail: design not found
