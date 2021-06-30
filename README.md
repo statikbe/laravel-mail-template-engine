@@ -6,3 +6,4 @@ How to use
 
 Publishing
 
+© Spatie van den Aldi
