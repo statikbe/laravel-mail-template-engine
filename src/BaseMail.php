@@ -59,7 +59,7 @@ class BaseMail extends Mailable
         $senderEmail = $this->getTranslation($this->template, 'sender_email', $this->locale) ?? config('mail.from.address');
         $senderName = $this->getTranslation($this->template, 'sender_name', $this->locale);
 
-        $debugEmail = config('mail-editor.debug_mail');
+        $debugEmail = config('mail-template-engine.debug_mail');
         $cc = $this->getCc($this->template, $this->recipientVars);
         if(config('app.debug') && !empty($cc)) {
             $cc = $debugEmail;
@@ -156,7 +156,7 @@ class BaseMail extends Mailable
     }
 
     private function applyRenderEngine($engine, $design, $body){
-        $renderEngines = config('mail-editor.render_engines');
+        $renderEngines = config('mail-template-engine.render_engines');
         /** @var \Statikbe\LaravelMailEditor\Interfaces\RenderEngine $renderEngine */
         $renderEngine = new $renderEngines[$engine];
 

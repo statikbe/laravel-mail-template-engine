@@ -14,7 +14,7 @@ class MailEditorServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/mail-editor.php', 'mail-editor'
+            __DIR__.'/../config/mail-template-engine.php', 'mail-template-engine'
         );
     }
 
@@ -26,7 +26,7 @@ class MailEditorServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../config/mail-editor.php' => config_path('mail-editor.php'),
+            __DIR__.'/../config/mail-template-engine.php' => config_path('mail-template-engine.php'),
         ], 'config');
 
         $this->publishes([

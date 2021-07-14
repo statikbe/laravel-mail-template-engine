@@ -53,7 +53,7 @@ class AbstractMail
             $mail->onQueue($this->queue);
         }
         if(config('app.debug')) {
-            $recipientMail = config('mail-editor.debug_mail');
+            $recipientMail = config('mail-template-engine.debug_mail');
         }
 
         //Mail::to($recipientMail)->send($mail);
@@ -155,7 +155,7 @@ class AbstractMail
     }
 
     private function getMailTemplates(){
-        $templateKey = array_search(static::class, config('mail-editor.templates'));
+        $templateKey = array_search(static::class, config('mail-template-engine.templates'));
 
         return MailTemplate::where('mail_type', $templateKey)->get();
     }

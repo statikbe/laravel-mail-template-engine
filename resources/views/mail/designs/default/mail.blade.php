@@ -6,7 +6,7 @@
     @if(file_exists(app_path() . '/../resources/views/vendor/statikbe/mail/designs/default/styles.css'))
         <style type="text/css">{{ file_get_contents(app_path() . '/../resources/views/vendor/statikbe/mail/designs/default/styles.css') }}</style>
     @else
-        <style type="text/css">{{ file_get_contents(app_path() . '/../vendor/statikbe/laravel-mail-editor/resources/views/mail/designs/default/styles.css') }}</style>
+        <style type="text/css">{{ file_get_contents(app_path() . '/../vendor/statikbe/laravel-mail-template-engine/resources/views/mail/designs/default/styles.css') }}</style>
     @endif
     @if(isset($css))
         <style type="text/css">

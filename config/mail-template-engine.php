@@ -60,11 +60,10 @@ return [
     |
     | Provided: - Html engine for regular HTML wysiwyg
     |           - Editor-js engine for Editor.js wysiwyg json data
-    |           - Markdown (coming soon)
     |
     */
     'render_engines' => [
-        'editor-js' => Statikbe\LaravelMailEditor\RenderEngines\EditorJsRenderEngine::class,
         'html' => Statikbe\LaravelMailEditor\RenderEngines\HtmlRenderEngine::class,
+        //'editor-js' => Statikbe\LaravelMailEditor\RenderEngines\EditorJsRenderEngine::class,
     ],
 ];
