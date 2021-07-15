@@ -7,11 +7,25 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
-class AbstractMail
+abstract class AbstractMail
 {
     protected static $name;
 
     private $queue;
+
+    /**
+     * Provide the fillable variables used in the content of this mail.
+     *
+     * @return array
+     */
+    abstract public static function getContentVariables();
+
+    /**
+     * Provide the fillable variables used as the recipients of this mail.
+     *
+     * @return array
+     */
+    abstract public static function getRecipientVariables();
 
     /**
      *
@@ -60,12 +74,14 @@ class AbstractMail
         Mail::to($recipientMail)->queue($mail);
     }
 
-    /*
+    /**
      * Formats all possible inputs to following array format:
-     * [
-     * ['mail' => 'robbe@statik.be',
-     * 'locale' => 'nl'],
-     * ]
+     *  [
+     *      [
+     *          'mail' => 'robbe@statik.be',
+     *          'locale' => 'nl'
+     *      ],
+     *  ]
      * */
     private function formatData($recipientDataArray)
     {
@@ -155,8 +171,8 @@ class AbstractMail
     }
 
     private function getMailTemplates(){
-        $templateKey = array_search(static::class, config('mail-template-engine.templates'));
+        $templateKey = array_search(static::class, config('mail-template-engine.mails'));
 
-        return MailTemplate::where('mail_type', $templateKey)->get();
+        return MailTemplate::where('mail_class', $templateKey)->get();
     }
 }

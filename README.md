@@ -1,9 +1,112 @@
-TODO
+# Laravel Mail Template Engine
 
-How to install
+The Laravel Mail Template Engine makes it possible to create mail templates for your transactional mails. 
+These mail templates can hold content and recipient variables which can be filled when triggering the mail. 
 
-How to use
+This package works together with our [Laravel Nova Mail Editor](https://github.com/statikbe/laravel-nova-mail-editor) that provides a UI to let content managers edit translations.
 
-Publishing
+## How it works
+The packages combines 3 different sets of data to send a transactional mail. 
+1. Firstly there is the Mail class: here you define a name, content variables and recipient variables.
+2. Next up you store your mail templates in your database, you can do this in Nova using [Laravel Nova Mail Editor](https://github.com/statikbe/laravel-nova-mail-editor). Or you write your own interface to save the templates.
+3. Finally, you call the mail class and fill in its variables (content and recipient). 
+At this moment the engine will look for all templates using this class, starts filling them with the provided variables and send them to the selected recipients.
+ 
+## Installation
 
-© Spatie van den Aldi
+1. Install using composer:
+```
+composer require statikbe/laravel-mail-template-engine
+```
+
+2. Publish the mail template migration and config
+```
+php artisan vendor:publish --tag=mail-template-engine
+```
+
+3. Run the mail template migration
+```
+php artisan migrate
+```
+
+## How to use
+
+### The mail class
+This class will decide what content variables are available in your mail template and will be used to decide when a mail is send. 
+
+After creating a Mail class, add them to the config `mail-template-engine.php` mails.
+
+An example of a Mail class can be found at `src/Mails/ResetPassword.php`.
+```php
+<?php
+
+namespace Statikbe\LaravelMailEditor\Mails;
+
+use Statikbe\LaravelMailEditor\AbstractMail;
+
+class ResetPassword extends AbstractMail
+{
+    public static function name(){
+        return __('ResetPasswordTemplate');
+    }
+
+    public static function getContentVariables(){
+        return [
+            'url' => __('Reset password URL'),
+        ];
+    }
+
+    public static function getRecipientVariables(){
+        return [
+            'user' => __('User')
+        ];
+    }
+}
+```
+
+### The Mail Templates
+Mail templates are stored in the database. This uses the model `Statikbe\LaravelMailEditor\MailTemplate` and can be created like any other model. 
+A mail template can be localized, we use Spatie's translatable package for this to work. More information can be found on their page: [Laravel Translatable](https://github.com/spatie/laravel-translatable).
+
+//TODO: table with all available fields
+
+If your application is using Nova you can use [Nova Mail Editor](https://github.com/statikbe/laravel-nova-mail-editor): a tool editing and creating mail templates.
+ 
+### Calling the mail class 
+In order to send mails you fill and send Mail classes. The filling references to providing the correct data for the variables of the class. 
+The class will now look for any mail template in the database using this Mail class, build and send the mail.  
+
+An example:
+```php
+use Statikbe\LaravelMailEditor\Mails\ResetPassword;
+
+$contentVars = [
+    'nl' => [
+        'url' => $verificationUrl,
+    ],
+];
+$recipientVars = [
+    'user' => [
+        'mail' => $user->email,
+        'locale' => 'en',
+    ],
+];
+
+$mail = new ResetPassword();
+$mail->sendMail($contentVars, $recipientVars);
+```
+
+## Configuration
+
+You can publish the configuration by running this command:
+```
+php artisan vendor:publish --tag=mail-template-engine
+```
+
+The following configuration fields are available:
+
+TODO document configuration
+
+
+## License
+The MIT License (MIT). Please see [license file](LICENSE.md) for more information.

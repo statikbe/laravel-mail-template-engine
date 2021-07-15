@@ -11,7 +11,7 @@ class MailTemplate extends Model
 
     public $translatable = ['subject', 'body', 'attachments', 'sender_name', 'sender_email'];
 
-    protected $fillable = ['mail_type', 'name', 'recipients', 'subject', 'body', 'attachments', 'sender_name', 'sender_email', 'cc', 'bcc', 'design', 'render_engine'];
+    protected $fillable = ['mail_class', 'name', 'recipients', 'subject', 'body', 'attachments', 'sender_name', 'sender_email', 'cc', 'bcc', 'design', 'render_engine'];
 
     protected $casts = [
         'recipients' => 'json',

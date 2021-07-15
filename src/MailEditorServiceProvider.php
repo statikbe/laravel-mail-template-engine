@@ -27,11 +27,11 @@ class MailEditorServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/../config/mail-template-engine.php' => config_path('mail-template-engine.php'),
-        ], 'config');
+        ], ['config', 'mail-template-engine']);
 
         $this->publishes([
             __DIR__.'/../database/migrations/create_mail_templates_table.php.stub' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_mail_templates_table.php'),
-        ], 'migrations');
+        ], ['migrations', 'mail-template-engine']);
 
         $this->publishes([
             __DIR__.'/../resources/views' => resource_path('views/vendor/statikbe'),

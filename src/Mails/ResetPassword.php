@@ -1,6 +1,6 @@
 <?php
 
-namespace Statikbe\LaravelMailEditor\Templates;
+namespace Statikbe\LaravelMailEditor\Mails;
 
 use Statikbe\LaravelMailEditor\AbstractMail;
 

@@ -1,18 +1,20 @@
 <?php
 
-namespace Statikbe\LaravelMailEditor\Templates;
+namespace Statikbe\LaravelMailEditor\Mails;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
 use Statikbe\LaravelMailEditor\AbstractMail;
 
-class VerifyEmail extends AbstractMail
+class TestMail extends AbstractMail
 {
     public static function name(){
-        return __('VerifyEmailTemplate');
+        return __('TestMailTemplate');
     }
 
     public static function getContentVariables(){
         return [
-            'url' => __('Verification URL'),
+            'test' => __('Test variable'),
         ];
     }
 
