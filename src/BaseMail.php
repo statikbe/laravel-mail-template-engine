@@ -23,8 +23,6 @@ class BaseMail extends Mailable
      */
     private $recipientVars;
 
-    private $recipientData;
-
     /**
      * @var \Statikbe\LaravelMailEditor\MailTemplate
      */
@@ -37,12 +35,11 @@ class BaseMail extends Mailable
 
     private $mailAttachments;
 
-    public function __construct($recipientMail, array $contentVars, array $recipientVars, $recipientData, MailTemplate $template, $locale, $mailAttachments)
+    public function __construct($recipientMail, array $contentVars, array $recipientVars, MailTemplate $template, $locale, $mailAttachments)
     {
         $this->recipientMail = $recipientMail;
         $this->contentVars = $contentVars;
         $this->recipientVars = $recipientVars;
-        $this->recipientData = $recipientData;
         $this->template = $template;
         $this->locale = $locale;
         $this->mailAttachments = $mailAttachments;

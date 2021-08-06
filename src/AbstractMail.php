@@ -35,6 +35,16 @@ abstract class AbstractMail
      */
     public function sendMail($contentVars, $recipientVars, $attachments = [])
     {
+        $this->dispatchMailTemplates($contentVars, $recipientVars, $attachments);
+    }
+
+    public function renderMail($contentVars, $recipientVars, $attachments = [])
+    {
+        return $this->dispatchMailTemplates($contentVars, $recipientVars, $attachments, true);
+    }
+
+    public function dispatchMailTemplates($contentVars, $recipientVars, $attachments = [], $render = false)
+    {
         $mailTemplates = $this->getMailTemplates();
         $recipientVarsFormatted = [];
         foreach ($mailTemplates as $template) {
@@ -46,7 +56,7 @@ abstract class AbstractMail
             foreach ($allRecipients as $recipient) {
                 if(strpos($recipient, '@') == false) {
                     $recipientDataArray = $recipientVars[$recipient] ?? [];
-                    $recipientDataArrayFormatted = $this->formatData($recipientDataArray);
+                    $recipientDataArrayFormatted = $this->formatRecipientArray($recipientDataArray);
                     $recipientVarsFormatted[$template->id][$recipient] = $recipientDataArrayFormatted;
                 }
             }
@@ -54,15 +64,20 @@ abstract class AbstractMail
             foreach ($templateRecipients as $templateRecipient) {
                 $recipientArray = $recipientVarsFormatted[$template->id][$templateRecipient];
                 foreach($recipientArray as $recipient) {
-                    $this->buildMail($recipient['mail'], $contentVars, $recipientVarsFormatted, null, $template, $recipient['locale'], $attachments[$templateRecipient] ?? []);
+                    return $this->buildMail($recipient['mail'], $contentVars, $recipientVarsFormatted, $template, $recipient['locale'], $attachments[$templateRecipient] ?? [], $render);
                 }
             }
         }
     }
 
-    private function buildMail($recipientMail, $contentVars, $recipientVars, $recipientData, $template, $locale, $attachments)
+    private function buildMail($recipientMail, $contentVars, $recipientVars, $template, $locale, $attachments, $render = false)
     {
-        $mail = (new BaseMail($recipientMail, $contentVars, $recipientVars, $recipientData, $template, $locale, $attachments));
+        $mail = (new BaseMail($recipientMail, $contentVars, $recipientVars, $template, $locale, $attachments));
+
+        if ($render){
+            return $mail->render();
+        }
+
         if ($this->queue){
             $mail->onQueue($this->queue);
         }
@@ -83,60 +98,56 @@ abstract class AbstractMail
      *      ],
      *  ]
      * */
-    private function formatData($recipientDataArray)
+    private function formatRecipientArray($recipientData, $locale = null)
     {
-        $recipientDataArrayFormatted = [];
-        if(!$recipientDataArray || empty($recipientDataArray)) {
+        if(!$recipientData || empty($recipientData)) {
             return [];
-        }elseif(is_array($recipientDataArray)) {
-            if(array_key_exists('locale',$recipientDataArray) && array_key_exists('mail',$recipientDataArray)) {
-                if(is_array($recipientDataArray['mail'])) {
-                    foreach($recipientDataArray['mail'] as $mail) {
-                        $recipientDataArrayFormatted[] = ['mail' => $mail, 'locale' => $recipientDataArray['locale']];
-
-                    }
-                }else{
-                    $recipientDataArrayFormatted[] = ['mail' => $recipientDataArray['mail'], 'locale' => $recipientDataArray['locale']];
-                }
-            }else{
-                foreach($recipientDataArray as $recipientDataRecord) {
-                    if(array_key_exists('mail',$recipientDataRecord)) {
-                        if(is_array($recipientDataRecord['mail'])) {
-                            foreach($recipientDataRecord['mail'] as $mail) {
-                                $recipientDataArrayFormatted[] = ['mail' => $mail, 'locale' => $recipientDataRecord['locale']];
-                            }
-                        }else{
-                            $recipientDataArrayFormatted[] = $recipientDataRecord;
-                        }
-                    }elseif(is_object($recipientDataRecord[0])) {
-                        foreach ($recipientDataRecord as $recipient) {
-                            $recipientDataArrayFormatted[] = ['mail' => $recipient->email , 'locale' => $recipient->locale ?? app()->getLocale()];
-                        }
-                    }elseif(is_object($recipientDataRecord)){
-                        $recipientDataArrayFormatted[] = ['mail' => $recipientDataRecord->email , 'locale' => $recipientDataRecord->locale ?? app()->getLocale()];
-
-                    }
-                }
-            }
         }
 
-        elseif($recipientDataArray instanceof Collection) {
-            foreach($recipientDataArray as $recipientData) {
-                $recipientDataArrayFormatted[] = ['mail' => $recipientData->email , 'locale' => $recipientData->locale ?? app()->getLocale()];
+        $recipientDataArrayFormatted = [];
+        if($recipientData instanceof Collection) {
+            foreach($recipientData as $recipient) {
+                $recipientDataArrayFormatted[] = $this->formatRecipientArray($recipient);
             }
+            return $recipientDataArrayFormatted;
         }
 
-        elseif(key_exists('mail', $recipientDataArray)) {
-            if(is_array($recipientDataArray['mail'])) {
-                foreach($recipientDataArray['mail'] as $mail) {
-                    $recipientDataArrayFormatted[] = ['mail' => $mail , 'locale' => $recipientDataArray['locale'] ?? app()->getLocale()];
-                }
-            }else {
-                $recipientDataArrayFormatted[] = $recipientDataArray;
+        if(is_array($recipientData)) {
+            if(array_key_exists('locale', $recipientData)){
+                $locale = $recipientData['locale'];
             }
+
+            if(array_key_exists('mail', $recipientData)) {
+                return $this->formatRecipientArray($recipientData['mail'], $locale);
+            }
+
+            foreach($recipientData as $recipient) {
+                $recipientDataArrayFormatted[] = $this->formatRecipientArray($recipient, $locale);
+            }
+
+            return $recipientDataArrayFormatted;
+        }
+
+        if(is_object($recipientData)) {
+            if (!$recipientData->email){
+                throw new \Exception('Recipient object is missing an email property or value');
+            }
+            return $this->createRecipientData($recipientData->email, $locale ?? $recipientData->locale);
+        }
+
+        if (is_string($recipientData)){
+            return $this->createRecipientData($recipientData, $locale);
         }
 
         return $recipientDataArrayFormatted;
+    }
+
+    private function createRecipientData($mail, $locale)
+    {
+        return [
+            'mail' => $mail,
+            'locale' => $locale ?? app()->getLocale()
+        ];
     }
 
     public static function name()
