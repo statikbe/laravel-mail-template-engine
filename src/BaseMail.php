@@ -68,7 +68,7 @@ class BaseMail extends Mailable
         $design = $this->template->design;
         $engine = $this->template->render_engine;
 
-        $mail =  $this
+        $mail = $this
             ->from($senderEmail, $senderName)
             ->subject($subject)
             ->applyRenderEngine($engine, $design, $body)
