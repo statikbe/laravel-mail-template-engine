@@ -10,7 +10,7 @@ return [
     | This mail address will be used to send mails to when in debug mode.
     |
     */
-    'debug_mail' => env('DEBUG_MAIL', 'default@example.com'),
+    'debug_mail' => env('DEBUG_MAIL'),
 
     /*
     |--------------------------------------------------------------------------
@@ -66,4 +66,16 @@ return [
         'html' => Statikbe\LaravelMailEditor\RenderEngines\HtmlRenderEngine::class,
         //'editor-js' => Statikbe\LaravelMailEditor\RenderEngines\EditorJsRenderEngine::class,
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Base Mail Class
+    |--------------------------------------------------------------------------
+    |
+    | It is possible to provide your own BaseMail class
+    | for custom implementations.
+    |
+    */
+    'base_mail' => \Statikbe\LaravelMailEditor\BaseMail::class,
+
 ];

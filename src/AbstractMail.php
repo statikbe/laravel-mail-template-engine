@@ -72,7 +72,8 @@ abstract class AbstractMail
 
     private function buildMail($recipientMail, $contentVars, $recipientVars, $template, $locale, $attachments, $render = false)
     {
-        $mail = (new BaseMail($recipientMail, $contentVars, $recipientVars, $template, $locale, $attachments));
+        $baseMail = config('mail-template-engine.base_mail');
+        $mail = (new $baseMail($recipientMail, $contentVars, $recipientVars, $template, $locale, $attachments));
 
         if ($render){
             return $mail->render();

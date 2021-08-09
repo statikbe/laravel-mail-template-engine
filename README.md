@@ -96,6 +96,14 @@ $mail = new ResetPassword();
 $mail->sendMail($contentVars, $recipientVars);
 ```
 
+## Styling
+The default design provided by the package comes from [here](https://github.com/leemunroe/responsive-html-email-template).
+You can publish the views and customize all you want! 
+```
+php artisan vendor:publish --provider="Statikbe\LaravelMailEditor\MailEditorServiceProvider" --tag=views
+```
+You can provide your own designs by adding them to the `designs` array in the config. Designs are view directories where you store the views for your render engines, F.E. the default HTML engine expects a view called `html.blade.php`. 
+
 ## Configuration
 
 You can publish the configuration by running this command:
