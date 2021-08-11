@@ -1,11 +1,11 @@
 <?php
 
-namespace Statikbe\LaravelMailEditor\RenderEngines;
+namespace Statikbe\LaravelMailEditor\MailRenderEngines;
 
 use Illuminate\Mail\Mailable;
-use Statikbe\LaravelMailEditor\Interfaces\RenderEngine;
+use Statikbe\LaravelMailEditor\Interfaces\MailRenderEngine;
 
-class EditorJsRenderEngine implements RenderEngine
+class EditorJsEngine implements MailRenderEngine
 {
     /**
      * @param \Illuminate\Mail\Mailable $mailable

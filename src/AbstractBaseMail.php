@@ -130,7 +130,7 @@ abstract class AbstractBaseMail extends Mailable
 
     protected function applyRenderEngine($engine, $design, $body){
         $renderEngines = config('mail-template-engine.render_engines');
-        /** @var \Statikbe\LaravelMailEditor\Interfaces\RenderEngine $renderEngine */
+        /** @var \Statikbe\LaravelMailEditor\Interfaces\MailRenderEngine $renderEngine */
         $renderEngine = resolve($renderEngines[$engine]);
 
         return $renderEngine($this, $design, $body);

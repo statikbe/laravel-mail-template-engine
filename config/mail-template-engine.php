@@ -63,8 +63,8 @@ return [
     |
     */
     'render_engines' => [
-        'html' => Statikbe\LaravelMailEditor\RenderEngines\HtmlRenderEngine::class,
-        //'editor-js' => Statikbe\LaravelMailEditor\RenderEngines\EditorJsRenderEngine::class,
+        'html' => Statikbe\LaravelMailEditor\MailRenderEngines\HtmlEngine::class,
+        //'editor-js' => Statikbe\LaravelMailEditor\MailRenderEngines\EditorJsEngine::class,
     ],
 
     /*
