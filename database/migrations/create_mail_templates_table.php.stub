@@ -28,6 +28,7 @@ class CreateMailTemplatesTable extends Migration
             $table->string('design');
             $table->string('render_engine');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

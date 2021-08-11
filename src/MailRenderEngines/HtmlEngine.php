@@ -14,9 +14,9 @@ class HtmlEngine implements MailRenderEngine
     public function __invoke(Mailable $mailable, $design, $body)
     {
         return $mailable->view($design.'.html')
-        ->with([
-            'content' => $body,
-            'design' => $design,
-        ]);
+            ->with([
+                'content' => $body,
+                'design' => $design,
+            ]);
     }
 }
