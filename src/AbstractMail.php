@@ -156,11 +156,6 @@ abstract class AbstractMail
         return static::$name ?: static::parsedClassName();
     }
 
-    /**
-     * Little something I borrowed from Nova.
-     *
-     * @return string
-     */
     private static function parsedClassName()
     {
         return Str::title(Str::snake(class_basename(get_called_class()), ' '));

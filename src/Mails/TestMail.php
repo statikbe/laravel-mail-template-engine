@@ -2,8 +2,6 @@
 
 namespace Statikbe\LaravelMailEditor\Mails;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
 use Statikbe\LaravelMailEditor\AbstractMail;
 
 class TestMail extends AbstractMail

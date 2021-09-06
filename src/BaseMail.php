@@ -3,9 +3,6 @@
 namespace Statikbe\LaravelMailEditor;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Mail\Mailable;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class BaseMail extends AbstractBaseMail
 {

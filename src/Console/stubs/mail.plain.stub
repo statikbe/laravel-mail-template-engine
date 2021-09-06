@@ -1,0 +1,35 @@
+<?php
+
+namespace DummyNamespace;
+
+use Statikbe\LaravelMailEditor\AbstractMail;
+
+class DummyClass extends AbstractMail
+{
+	protected static $name = 'DummyClassName';
+
+    /**
+     * This array lists the possible variable data
+     * included in the content of the mail.
+     *
+     * @return array
+     */
+    public static function getContentVariables(){
+        return [
+            'key' => __('visible value for editor')
+        ];
+    }
+
+    /**
+     * This array lists the possible variable
+     * recipients that can receive this mail.
+     *
+     * @return array
+     */
+    public static function getRecipientVariables(){
+        return [
+            'key' => __('visible value for editor')
+        ];
+    }
+}
+

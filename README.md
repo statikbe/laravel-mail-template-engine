@@ -34,6 +34,11 @@ php artisan migrate
 ### The mail class
 This class will decide what content variables are available in your mail template and will be used to decide when a mail is send. 
 
+You can generate a mail with the following command 
+```shell script
+php artisan make:mail-class SomeEventMail
+```
+
 After creating a Mail class, add them to the config `mail-template-engine.php` mails.
 
 An example of a Mail class can be found at `src/Mails/ResetPassword.php`.
@@ -44,7 +49,7 @@ namespace Statikbe\LaravelMailEditor\Mails;
 
 use Statikbe\LaravelMailEditor\AbstractMail;
 
-class ResetPassword extends AbstractMail
+class ResetPasswordMail extends AbstractMail
 {
     public static function name(){
         return __('ResetPasswordTemplate');
@@ -58,7 +63,7 @@ class ResetPassword extends AbstractMail
 
     public static function getRecipientVariables(){
         return [
-            'user' => __('User')
+            'user' => __('User'),
         ];
     }
 }
@@ -78,7 +83,7 @@ The class will now look for any mail template in the database using this Mail cl
 
 An example:
 ```php
-use Statikbe\LaravelMailEditor\Mails\ResetPassword;
+use Statikbe\LaravelMailEditor\Mails\ResetPasswordMail;
 
 $contentVars = [
     'nl' => [
@@ -92,7 +97,7 @@ $recipientVars = [
     ],
 ];
 
-$mail = new ResetPassword();
+$mail = new ResetPasswordMail();
 $mail->sendMail($contentVars, $recipientVars);
 ```
 

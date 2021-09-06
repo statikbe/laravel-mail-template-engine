@@ -4,15 +4,15 @@ namespace Statikbe\LaravelMailEditor\Mails;
 
 use Statikbe\LaravelMailEditor\AbstractMail;
 
-class ResetPassword extends AbstractMail
+class VerifyEmailMail extends AbstractMail
 {
     public static function name(){
-        return __('ResetPasswordTemplate');
+        return __('VerifyEmailTemplate');
     }
 
     public static function getContentVariables(){
         return [
-            'url' => __('Reset password URL'),
+            'url' => __('Verification URL'),
         ];
     }
 
@@ -21,4 +21,6 @@ class ResetPassword extends AbstractMail
             'user' => __('User')
         ];
     }
+
+    //Todo: AttachmentVariables same as the ones above
 }

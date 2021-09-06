@@ -27,8 +27,8 @@ return [
     |
     */
     'mails' => [
-        'verify-email' => Statikbe\LaravelMailEditor\Mails\VerifyEmail::class,
-        'reset-password' => Statikbe\LaravelMailEditor\Mails\ResetPassword::class,
+        'verify-email' => Statikbe\LaravelMailEditor\Mails\VerifyEmailMail::class,
+        'reset-password' => Statikbe\LaravelMailEditor\Mails\ResetPasswordMail::class,
     ],
 
     /*

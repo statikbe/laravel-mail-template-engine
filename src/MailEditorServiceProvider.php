@@ -3,6 +3,7 @@
 namespace Statikbe\LaravelMailEditor;
 
 use Illuminate\Support\ServiceProvider;
+use Statikbe\LaravelMailEditor\Console\MailMakeCommand;
 
 class MailEditorServiceProvider extends ServiceProvider
 {
@@ -38,5 +39,11 @@ class MailEditorServiceProvider extends ServiceProvider
         ], 'views');
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'statikbe');
+
+        $this->app->singleton('command.mail.class.make', function ($app) {
+            return new MailMakeCommand($app['files']);
+        });
+
+        $this->commands(['command.mail.class.make']);
     }
 }
