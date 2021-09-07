@@ -73,9 +73,29 @@ class ResetPasswordMail extends AbstractMail
 Mail templates are stored in the database. This uses the model `Statikbe\LaravelMailEditor\MailTemplate` and can be created like any other model. 
 A mail template can be localized, we use Spatie's translatable package for this to work. More information can be found on their page: [Laravel Translatable](https://github.com/spatie/laravel-translatable).
 
-//TODO: table with all available fields
+You can use the keys from your corresponding mail_class to place variable data inside the mail template. 
 
-If your application is using Nova you can use [Nova Mail Editor](https://github.com/statikbe/laravel-nova-mail-editor): a tool editing and creating mail templates.
+The `MailTemplate` model consists off:
+
+| Name        | Type   | Description | Example
+| ----------- | ------ | ------------- | -------
+| mail_class  | string | A mail class from config `mail-template-engine.mails` | verify-email
+| name        | string | Just a descriptive naming of the mail for an index page | Email verification mail
+| subject     | json (translatable) | The subject, fillable with `ContentVariables` from the corresponding Mail Class | {"en": "Welcome [[name]], please verify your email"}
+| body        | json (translatable) | The body, fillable with `ContentVariables` from the corresponding Mail Class | {"en": "Welcome [[name]], please verify your email using the following url [[url]]."}
+| sender_name | json (translatable) | The sender by name | {"en": "Statik"}
+| sender_email | json (translatable) | The sender by email | {"en": "info@statik.be"}
+| recipients | json | The recipients of the mail, an array filled with both `RecipientVariables` from the Mail Class and/or plain emails | ["user","general@email.com"]
+| cc | json | The cc of the mail, an array filled with both `RecipientVariables` from the Mail Class and/or plain emails | ["user","general@email.com"]
+| bcc | json | The bcc of the mail, an array filled with both `RecipientVariables` from the Mail Class and/or plain emails | ["user","general@email.com"]
+| attachments | json (translatable) | work in progress | 
+| design | string | A design from config `mail-template-engine.designs` |  statikbe::mail.designs.default
+| render_engine | string | A render engine from config `mail-template-engine.render_engines` | html
+| created_at | timestamp
+| updated_at | timestamp
+| deleted_at | timestamp 
+
+If your application is using Nova you can use [Nova Mail Editor](https://github.com/statikbe/laravel-nova-mail-editor): a tool for editing and creating mail templates.
  
 ### Calling the mail class 
 In order to send mails you fill and send Mail classes. The filling references to providing the correct data for the variables of the class. 

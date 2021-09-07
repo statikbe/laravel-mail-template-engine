@@ -12,6 +12,7 @@ class VerifyEmailMail extends AbstractMail
 
     public static function getContentVariables(){
         return [
+            'name' => __('Name'),
             'url' => __('Verification URL'),
         ];
     }
@@ -21,6 +22,4 @@ class VerifyEmailMail extends AbstractMail
             'user' => __('User')
         ];
     }
-
-    //Todo: AttachmentVariables same as the ones above
 }
