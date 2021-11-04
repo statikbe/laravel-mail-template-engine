@@ -138,12 +138,7 @@ abstract class AbstractBaseMail extends Mailable
 
     protected function generateDebugMail()
     {
-        $debugEmail = null;
-        $isDebug = config('app.debug');
-
-        if ($isDebug){
-            $debugEmail = config('mail-template-engine.debug_mail');
-        }
+        $debugEmail = config('mail-template-engine.debug_mail');
 
         $this->debugMail = $debugEmail;
     }

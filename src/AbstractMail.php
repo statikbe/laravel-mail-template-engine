@@ -82,7 +82,7 @@ abstract class AbstractMail
         if ($this->queue){
             $mail->onQueue($this->queue);
         }
-        if(config('app.debug')) {
+        if(config('mail-template-engine.debug_mail')) {
             $recipientMail = config('mail-template-engine.debug_mail');
         }
 
