@@ -4,7 +4,7 @@ namespace Statikbe\LaravelMailEditor\Interfaces;
 
 use Illuminate\Mail\Mailable;
 
-interface RenderEngine
+interface MailRenderEngine
 {
     /**
      * Here you can define how and what the mailable should render

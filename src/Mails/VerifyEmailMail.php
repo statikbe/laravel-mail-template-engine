@@ -1,18 +1,19 @@
 <?php
 
-namespace Statikbe\LaravelMailEditor\Templates;
+namespace Statikbe\LaravelMailEditor\Mails;
 
 use Statikbe\LaravelMailEditor\AbstractMail;
 
-class ResetPassword extends AbstractMail
+class VerifyEmailMail extends AbstractMail
 {
     public static function name(){
-        return __('ResetPasswordTemplate');
+        return __('VerifyEmailTemplate');
     }
 
     public static function getContentVariables(){
         return [
-            'url' => __('Reset password URL'),
+            'name' => __('Name'),
+            'url' => __('Verification URL'),
         ];
     }
 

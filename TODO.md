@@ -1,3 +1,5 @@
 - Exceptions
     - BaseMail: renderengine not found
     - BaseMail: design not found
+- Commands
+    - Generate new mail class

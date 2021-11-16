@@ -10,25 +10,25 @@ return [
     | This mail address will be used to send mails to when in debug mode.
     |
     */
-    'debug_mail' => env('DEBUG_MAIL', 'default@example.com'),
+    'debug_mail' => env('DEBUG_MAIL'),
 
     /*
     |--------------------------------------------------------------------------
-    | Mail Templates
+    | Mail Classes
     |--------------------------------------------------------------------------
     |
-    | Here you can add all the provided mail templates that can be selected for
+    | Here you can add all the available mail classes that can be selected for
     | customization.
     |
-    | The key of this array is saved to the mail-template, this way you are not
-    | limited by the namespace of the template.
+    | The key of this array should be saved to the mail-template,
+    | this way you are not limited by the namespace of the template.
     |
     | F.E. 'test-mail' => App\Mail\TestMail::class,
     |
     */
-    'templates' => [
-        'verify-email' => Statikbe\LaravelMailEditor\Templates\VerifyEmail::class,
-        'reset-password' => Statikbe\LaravelMailEditor\Templates\ResetPassword::class,
+    'mails' => [
+        'verify-email' => Statikbe\LaravelMailEditor\Mails\VerifyEmailMail::class,
+        'reset-password' => Statikbe\LaravelMailEditor\Mails\ResetPasswordMail::class,
     ],
 
     /*
@@ -63,7 +63,19 @@ return [
     |
     */
     'render_engines' => [
-        'html' => Statikbe\LaravelMailEditor\RenderEngines\HtmlRenderEngine::class,
-        //'editor-js' => Statikbe\LaravelMailEditor\RenderEngines\EditorJsRenderEngine::class,
+        'html' => Statikbe\LaravelMailEditor\MailRenderEngines\HtmlEngine::class,
+        //'editor-js' => Statikbe\LaravelMailEditor\MailRenderEngines\EditorJsEngine::class,
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Base Mail Class
+    |--------------------------------------------------------------------------
+    |
+    | It is possible to provide your own BaseMail class
+    | for custom implementations.
+    |
+    */
+    'base_mail' => \Statikbe\LaravelMailEditor\BaseMail::class,
+
 ];
