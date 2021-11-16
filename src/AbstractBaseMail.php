@@ -73,7 +73,7 @@ abstract class AbstractBaseMail extends Mailable
     {
         $body = $this->generateText('body', $content, $template, $locale);
 
-        if (empty($body)){
+        if (empty($body)) {
             Log::alert("The body for template \"{$this->template->name}\" (id: {$this->template->id}) is empty. Using locale {$this->locale}.");
         }
 
@@ -84,11 +84,11 @@ abstract class AbstractBaseMail extends Mailable
     {
         $subject = $this->generateText('subject', $content, $template, $locale);
 
-        if (empty($subject)){
+        if (empty($subject)) {
             Log::alert("The subject for template \"{$this->template->name}\" (id: {$this->template->id}) is empty. Using locale {$this->locale}.");
         }
 
-        if(!empty($this->debugMail)) {
+        if (!empty($this->debugMail)) {
             $subject .= ' (Debug mail to '.$this->recipientMail.')';
         }
 
@@ -102,7 +102,7 @@ abstract class AbstractBaseMail extends Mailable
 
     protected function getCc()
     {
-        if($this->debugMail) {
+        if ($this->debugMail) {
             return $this->debugMail;
         }
 
@@ -116,7 +116,7 @@ abstract class AbstractBaseMail extends Mailable
 
     protected function getBcc()
     {
-        if($this->debugMail) {
+        if ($this->debugMail) {
             return $this->debugMail;
         }
 
@@ -128,7 +128,8 @@ abstract class AbstractBaseMail extends Mailable
         return $bccArray;
     }
 
-    protected function applyRenderEngine($engine, $design, $body){
+    protected function applyRenderEngine($engine, $design, $body)
+    {
         $renderEngines = config('mail-template-engine.render_engines');
         /** @var \Statikbe\LaravelMailEditor\Interfaces\MailRenderEngine $renderEngine */
         $renderEngine = resolve($renderEngines[$engine]);
@@ -152,24 +153,35 @@ abstract class AbstractBaseMail extends Mailable
 
         $mailArray = [];
 
-        foreach($copy as $mail) {
+        foreach ($copy as $mail) {
             $mailArray[] = $mail['mail'];
         }
 
         return $mailArray;
-
     }
 
+    /**
+     * @param Mailable $mail
+     */
     protected function attachMailAttachments(&$mail)
     {
-        foreach($this->mailAttachments as $attachment) {
-            if (is_array($attachment)){
+        //Attachment added to the mail class
+        foreach ($this->mailAttachments as $attachment) {
+            if (is_array($attachment)) {
                 [$path, $details] = array_values($attachment);
-                $mail->attach($path , $details);
+                $mail->attach($path, $details);
                 continue;
             }
 
             $mail->attach($attachment);
+        }
+
+        //Attachment added to the mail template
+        $attachments = $this->template->getTranslation('attachments', $this->locale);
+        if (is_array($attachments)) {
+            foreach ($attachments ?? [] as $attachment) {
+                $mail->attachFromStorage($attachment);
+            }
         }
     }
 }

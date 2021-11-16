@@ -106,20 +106,51 @@ An example:
 use Statikbe\LaravelMailEditor\Mails\ResetPasswordMail;
 
 $contentVars = [
-    'nl' => [
+    'nl' => [ //Optional wrap with locale
         'url' => $verificationUrl,
     ],
 ];
 $recipientVars = [
     'user' => [
-        'mail' => $user->email,
-        'locale' => 'en',
-    ],
+        //Use an array with mail and optional locale
+        [ 
+            'mail' => $user->email, 
+            'locale' => 'en',
+        ],
+        //Or use an object
+        $user 
+    ]
+];
+
+$attachments = [
+    'nl' => [ //Optional wrap with locale
+        'user' => [ 
+            //Using laravel mail attach functionality
+            [ 
+                'path' => $path, 
+                'options' => [
+                    'as' => 'factuur.pdf',
+                    'mime' => 'application/pdf',
+                ] 
+            ],
+            //Or add an entire file
+            $file 
+        ],
+    ]
 ];
 
 $mail = new ResetPasswordMail();
 $mail->sendMail($contentVars, $recipientVars);
 ```
+
+#### Content variables
+In this array you assign the values to each key used in the mail template(s). You define the recipients in `getContentVariables` in your mail class. Wrapping the content variables with a locale as key is optional.
+
+#### Recipient variables
+In this array you assign the mail and locale for each recipient in the mail template(s). You define the recipients in `getRecipientVariables` in your mail class. For more options on how to add the recipient variables look at `\Statikbe\LaravelMailEditor\AbsractMail::formatRecipientArray`.
+
+#### Attachment variables
+In this array you assign the attachment for each recipient in the mail template(s). You define the recipients in `getRecipientVariables` in your mail class. For more options on how to add the recipient variables look at `\Statikbe\LaravelMailEditor\AbsractMail::formatRecipientArray`. Wrapping the attachments with a locale as key is optional.
 
 ## Styling
 The default design provided by the package comes from [here](https://github.com/leemunroe/responsive-html-email-template).
