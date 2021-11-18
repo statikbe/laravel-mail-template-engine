@@ -4,6 +4,7 @@ namespace Statikbe\LaravelMailEditor;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Mail\Mailable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -64,17 +65,20 @@ abstract class AbstractMail
 
             //Send template mail to recipients
             foreach ($templateRecipients as $templateRecipient) {
-                $recipientArray = $recipientVarsFormatted[$template->id][$templateRecipient] ?? null;
-                if ($recipientArray){
-                    foreach ($recipientArray as $recipient) {
-                        $recipientMail = $recipient['mail'];
-                        $locale = $recipient['locale'];
-                        $attachmentArray = $this->getAttachmentArray($attachments, $locale, $templateRecipient);
+                //See if we should look for the $templateRecipient in the recipient variables
+                if (Arr::has(static::getRecipientVariables(), $templateRecipient)){
+                    $recipientArray = $recipientVarsFormatted[$template->id][$templateRecipient] ?? null;
+                    if ($recipientArray){
+                        foreach ($recipientArray as $recipient) {
+                            $recipientMail = $recipient['mail'];
+                            $locale = $recipient['locale'];
+                            $attachmentArray = $this->getAttachmentArray($attachments, $locale, $templateRecipient);
 
-                        $mails[] = $this->buildMail($recipientMail, $contentVars, $recipientVarsFormatted, $template, $locale, $attachmentArray, $render);
-                    }
+                            $mails[] = $this->buildMail($recipientMail, $contentVars, $recipientVarsFormatted, $template, $locale, $attachmentArray, $render);
+                        }
+                    } //Else the recipient variable is not filled in so we do not send the mail
                 } else {
-                    //Using raw email value from template recipient array
+                    //Else we assume the variable is of raw email
                     $locale = app()->getLocale();
                     $attachmentArray = $this->getAttachmentArray($attachments, $locale, $templateRecipient);
                     $mails[] = $this->buildMail($templateRecipient, $contentVars, $recipientVarsFormatted, $template, $locale, $attachmentArray, $render);
