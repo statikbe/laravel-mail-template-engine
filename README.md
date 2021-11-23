@@ -98,8 +98,8 @@ The `MailTemplate` model consists off:
 If your application is using Nova you can use [Nova Mail Editor](https://github.com/statikbe/laravel-nova-mail-editor): a tool for editing and creating mail templates.
  
 ### Calling the mail class 
-In order to send mails you fill and send Mail classes. The filling references to providing the correct data for the variables of the class. 
-The class will now look for any mail template in the database using this Mail class, build and send the mail.  
+In order to send mails you provide the content and recipient variables, and then send Mail object.  
+The mail object will now look for any mail template in the database using this Mail class, build it and send the mail.  
 
 An example:
 ```php
@@ -147,14 +147,14 @@ $mail->sendMail($contentVars, $recipientVars);
 In this array you assign the values to each key used in the mail template(s). You define the recipients in `getContentVariables` in your mail class. Wrapping the content variables with a locale as key is optional.
 
 #### Recipient variables
-In this array you assign the mail and locale for each recipient in the mail template(s). You define the recipients in `getRecipientVariables` in your mail class. For more options on how to add the recipient variables look at `\Statikbe\LaravelMailEditor\AbsractMail::formatRecipientArray`.
+In this array you assign the mail and locale for each recipient in the mail template(s). You define the recipients in `getRecipientVariables` in your mail class. For more options on how to add the recipient variables look at `\Statikbe\LaravelMailEditor\AbstractMail::formatRecipientArray`.
 
 #### Attachment variables
 In this array you assign the attachment for each recipient in the mail template(s). You define the recipients in `getRecipientVariables` in your mail class. For more options on how to add the recipient variables look at `\Statikbe\LaravelMailEditor\AbsractMail::formatRecipientArray`. Wrapping the attachments with a locale as key is optional.
 
 ## Styling
 The default design provided by the package comes from [here](https://github.com/leemunroe/responsive-html-email-template).
-You can publish the views and customize all you want! 
+You can publish the views and customise it all you want! 
 ```
 php artisan vendor:publish --provider="Statikbe\LaravelMailEditor\MailEditorServiceProvider" --tag=views
 ```
