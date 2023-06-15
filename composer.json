@@ -23,9 +23,9 @@
   ],
   "require": {
     "php": "^8.0|^8.1",
-    "illuminate/mail": "^9.0",
-    "illuminate/console": "^9.0",
-    "illuminate/bus": "^9.0",
+    "illuminate/mail": "^10.0",
+    "illuminate/console": "^10.0",
+    "illuminate/bus": "^10.0",
     "spatie/laravel-translatable": "^6.0"
   },
   "autoload": {
